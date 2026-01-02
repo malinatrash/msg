@@ -1,0 +1,28 @@
+[package]
+name = "msg-service"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+dotenv = "0.15"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+tracing-opentelemetry = "0.26"
+opentelemetry = "0.25"
+opentelemetry_sdk = { version = "0.25", features = ["rt-tokio"] }
+opentelemetry-otlp = { version = "0.25", features = ["tonic"] }
+diesel = { version = "2.2", features = ["postgres", "r2d2", "chrono", "uuid"] }
+diesel_migrations = "2.2"
+chrono = "0.4"
+uuid = { version = "1.0", features = ["v4", "serde"] }
+bcrypt = "0.15"
+jsonwebtoken = "9"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+axum = { version = "0.7", features = ["macros"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+thiserror = "1.0"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+utoipa = { version = "5", features = ["axum_extras", "uuid"] }
+utoipa-swagger-ui = { version = "8", features = ["axum", "vendored"] }

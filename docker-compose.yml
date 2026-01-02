@@ -1,0 +1,56 @@
+services:
+  service:
+    container_name: msg-service
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      secrets:
+        - netrc
+    env_file:
+      - ./.env
+    secrets:
+      - netrc
+    networks:
+      - service_net
+    volumes:
+      - ./:/app
+    depends_on:
+      - postgres
+      - jaeger
+
+  postgres:
+    container_name: msg-postgres
+    image: postgres:15
+    environment:
+      POSTGRES_DB: msg_db
+      POSTGRES_USER: msg_user
+      POSTGRES_PASSWORD: msg_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - service_net
+
+  jaeger:
+    container_name: msg-jaeger
+    image: jaegertracing/all-in-one:latest
+    environment:
+      COLLECTOR_OTLP_ENABLED: true
+    ports:
+      - "16686:16686" # Jaeger UI
+      - "4317:4317" # OTLP gRPC receiver
+      - "4318:4318" # OTLP HTTP receiver
+    networks:
+      - service_net
+
+volumes:
+  postgres_data:
+
+
+networks:
+  service_net:
+    external: true
+secrets:
+  netrc:
+    file: .netrc
