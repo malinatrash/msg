@@ -6,6 +6,9 @@ services:
       dockerfile: Dockerfile.dev
       secrets:
         - netrc
+    ports:
+      - "50051:50051"
+      - "8080:8080"
     env_file:
       - ./.env
     secrets:
